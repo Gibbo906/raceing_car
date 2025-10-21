@@ -22,16 +22,16 @@ class Player:
         self.rect.x = self.x
         self.screen.blit(self.image,(self.x,self.y))
         if self.move_left:
-            self.x -= 1
+            self.x -= 0.5
         elif self.move_right:
-            self.x += 1
+            self.x += 0.5
 
         if self.x < 68 or self.x > 440:
             #self.main.running = False
             if self.move_left:
-                self.x += 1
+                self.x += 3
             elif self.move_right:
-                self.x -= 1
+                self.x -= 3
 
 class Enemy(Sprite):
     def __init__(self,main):
@@ -64,7 +64,7 @@ class Background:
 
 class Main:
     def __init__(self):
-        self.settings = {"screen_width":558,"screen_height":586,"bg_color":[255,255,255]}
+        self.settings = {"screen_width":558,"screen_height":586,"bg_color":[0,0,40]}
         self.screen = pygame.display.set_mode((self.settings['screen_width'],
         self.settings['screen_height']))
 
@@ -77,14 +77,14 @@ class Main:
         self.player = Player(self)
         self.enemies = pygame.sprite.Group()
         self.start_time = time()
-        self.timer = 0
-        self.score = 0
+        self.timer = 20
+        self.score = -10
         pygame.font.init()
         self.font = pygame.font.SysFont('Consolas', 30)
         self.textsurface = None
         pygame.mixer.init()
         pygame.mixer.music.load('Hurry_Up.mp3')
-        pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.play(loops=-3)
         
     def check(self):
         for event in pygame.event.get():
@@ -111,11 +111,11 @@ class Main:
             self.player.move_right = False
 
     def update_timer(self):
-        #self.timer = round(time()-self.start_time,2)
+        #self.timer = round(time()-self.start_time,21
         self.timer+=1
 
     def draw_score(self):
-        self.textsurface = self.font.render(str(self.score), False, (255, 255, 255))
+        self.textsurface = self.font.render(str(self.score), False, (0, 0, 40))
         self.screen.blit(self.textsurface,(0,0))
         
     def update_enemy(self):
@@ -125,7 +125,7 @@ class Main:
         for enemy in self.enemies:
             if enemy.rect.y >= self.settings['screen_height']:
                 enemy.kill()
-                self.score += 1
+                self.score += 1.5
         if pygame.sprite.spritecollideany(self.player, self.enemies):
             self.running = False
 
@@ -160,3 +160,4 @@ class Main:
 if __name__ == '__main__':
     main = Main()
     main.run()
+
